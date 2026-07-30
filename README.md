@@ -14,40 +14,61 @@ El sistema simula la interacción continua de cientos de usuarios representados 
 
 El pipeline de procesamiento se organiza en 6 capas funcionales desacopladas, garantizando escalabilidad horizontal y tolerancia a fallos:
 
-+-------------------------------------------------------------------------------------------------------------------+
-|                                 PLATAFORMA INTELIGENTE DE AUDIENCIAS DIGITALES EN TIEMPO REAL                      |
-|                                   Arquitectura Orientada a Eventos (EDA) | UNSA Big Data 2026                    |
-+-------------------------------------------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph CAPA_1 [Capa 1: Simulación de Agentes]
+        A[Simulador de Agentes - Python 3.11] -->|Eventos JSON| B
+    end
 
-  [ CAPA 1: SIMULACIÓN DE AGENTES ]        [ CAPA 2: INGESTA DE EVENTOS ]         [ CAPA 3: PROCESAMIENTO DISTRIBUIDO ]
- +----------------------------------+     +--------------------------------+     +----------------------------------+
- | SIMULADOR AUTÓNOMO               |     | APACHE KAFKA CLUSTER           |     | APACHE FLINK ENGINE              |
- | (Python 3.11 / Producers)        |     | (Docker en AWS EC2)            |     | (PyFlink Stream Processing)      |
- |                                  |     |                                |     |                                  |
- | 8 Perfiles de Agentes            |     | Topic: digital-events          |     | Time Windows (Sliding 0.5s)      |
- |   - Compulsivo   - Comparador    |     |   +-- Partición 0 (agent_id)   |     | KeyBy(agent_id) + State Store    |
- |   - Nocturno     - Premium       |---->|   +-- Partición 1 (agent_id)   |---->| Reglas de Clasificación          |
- |   - Frecuente    - Indeciso      | JSON|   +-- Partición 2 (agent_id)   | JSON|   - Audiencias Digitales         |
- |   - Explorador   - Estacional    |     |                                |     |   - Tasa de Conversión           |
- |                                  |     | Topic: system-control          |     |   - Detección de Anomalías       |
- | Motor de Escenarios Globales     |     |   +-- Partición 0 (Broadcast)  |     |                                  |
- |   (Navidad, Cyber, Fiestas Pat.) |     +--------------------------------+     +----------------------------------+
- +----------------------------------+                                                      |
-                                                                                           | Métricas Procesadas
-                                                                                           v
-  [ CAPA 6: PRESENTACIÓN Y ACCIÓN ]        [ CAPA 5: BACKEND & WEBSOCKETS ]       [ CAPA 4: SALIDA Y PERSISTENCIA ]
- +----------------------------------+     +--------------------------------+     +----------------------------------+
- | REACT DASHBOARD (Frontend)       |     | FASTAPI BACKEND SERVER         |     | APACHE KAFKA SINK                |
- | (Vite + Recharts + Tailwind)     |     | (Python Web Framework)         |     | (Docker en AWS EC2)              |
- |                                  |     |                                |     |                                  |
- | KPIs en Vivo (Active Users,      |     | Kafka Consumer Loop            |     | Topic: processed-audiences       |
- |    Events/sec, Conversión Gauge) |<----+   (Escucha métricas de Flink)  |<----+   +-- Particiones (0, 1, 2)         |
- | Audiencias & Funnel              | WS  | WebSocket Server Push          | JSON|                                  |
- | Live Stream Tables (Trazab.)     | 0.5s|   (Broadcasting continuo <500ms)|     | Topic: dashboard-metrics         |
- | Activación de Acciones           |     | REST API Controller            |     |   +-- Partición 0                |
- |    (Pop-ups, Reminders, Alertas) |     |   (Envía cambios de escenario) |     +----------------------------------+
- +----------------------------------+     +--------------------------------+
+    subgraph CAPA_2 [Capa 2: Ingesta de Eventos]
+        B[Apache Kafka Cluster - digital-events] -->|Stream de Datos| C
+    end
 
+    subgraph CAPA_3 [Capa 3: Procesamiento Distribuido]
+        C[Apache Flink Engine - Stateful Windows] -->|Métricas Procesadas| D
+    end
+
+    subgraph CAPA_4 [Capa 4: Salida y Persistencia]
+        D[Apache Kafka Sink - processed-audiences] -->|Consumer Loop| E
+    end
+
+    subgraph CAPA_5 [Capa 5: Backend y WebSockets]
+        E[FastAPI Backend Server] -->|Push WebSocket sub-500ms| F
+    end
+
+    subgraph CAPA_6 [Capa 6: Presentación y Acción]
+        F[React Dashboard - Vite + Recharts]
+    end
+
+Representación Esquemática en Texto
+====================================================================
+           PLATAFORMA INTELIGENTE DE AUDIENCIAS DIGITALES
+====================================================================
+
+ [CAPA 1: AGENTES SIMULADOS]       (Python 3.11 / Producers)
+            │                      • 8 Perfiles de Agentes
+            ▼ (Eventos JSON)       • Motor de Escenarios Globales
+            
+ [CAPA 2: APACHE KAFKA]            (Clúster de Ingesta)
+            │                      • Topic: digital-events
+            ▼ (Stream Ingestion)   • Topic: system-control
+            
+ [CAPA 3: APACHE FLINK]            (Procesamiento Distribuido)
+            │                      • KeyBy(agent_id) + State
+            ▼ (Métricas)           • Sliding Windows (0.5s)
+            
+ [CAPA 4: KAFKA SINK]              (Persistencia y Egreso)
+            │                      • Topic: processed-audiences
+            ▼ (Consumer Loop)      • Topic: dashboard-metrics
+            
+ [CAPA 5: FASTAPI BACKEND]         (Servidor WebSockets)
+            │                      • Push continuo < 500ms
+            ▼ (WebSocket Stream)   • REST API Control
+            
+ [CAPA 6: REACT DASHBOARD]         (Visualización Frontend)
+                                   • KPIs, Funnel y Alertas
+
+====================================================================
 ---
 
 ## ⚙️ Especificación Técnica de las Capas de la Solución
