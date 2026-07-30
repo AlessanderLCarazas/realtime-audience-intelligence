@@ -1,0 +1,15 @@
+*.pem
+.env
+__pycache__/
+*.pyc
+node_modules/
+dist/
+build/
+.DS_Store
+flink-venv/
+venv/
+.venv/
+*venv*/
+**/venv/
+**/*venv*/
+.venv/
