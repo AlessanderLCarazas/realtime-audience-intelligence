@@ -10,7 +10,7 @@ El sistema simula la interacción continua de cientos de usuarios representados 
 
 ---
 
-## 🏗️ Arquitectura del Sistema (Flujo de Datos)
+## 🏗️ ## Arquitectura del Sistema (Flujo de Datos)
 
 El pipeline de procesamiento se organiza en 6 capas funcionales desacopladas, garantizando escalabilidad horizontal y tolerancia a fallos:
 
@@ -44,37 +44,7 @@ graph TD
     B -->|"Stream Data"| C
     C -->|"Métricas Procesadas"| D
     D -->|"Consumer Loop"| E
-    E -->|"WebSocket Push < 500ms"| F
-
-Representación Esquemática en Texto
-====================================================================
-           PLATAFORMA INTELIGENTE DE AUDIENCIAS DIGITALES
-====================================================================
-
- [CAPA 1: AGENTES SIMULADOS]       (Python 3.11 / Producers)
-            │                      • 8 Perfiles de Agentes
-            ▼ (Eventos JSON)       • Motor de Escenarios Globales
-            
- [CAPA 2: APACHE KAFKA]            (Clúster de Ingesta)
-            │                      • Topic: digital-events
-            ▼ (Stream Ingestion)   • Topic: system-control
-            
- [CAPA 3: APACHE FLINK]            (Procesamiento Distribuido)
-            │                      • KeyBy(agent_id) + State
-            ▼ (Métricas)           • Sliding Windows (0.5s)
-            
- [CAPA 4: KAFKA SINK]              (Persistencia y Egreso)
-            │                      • Topic: processed-audiences
-            ▼ (Consumer Loop)      • Topic: dashboard-metrics
-            
- [CAPA 5: FASTAPI BACKEND]         (Servidor WebSockets)
-            │                      • Push continuo < 500ms
-            ▼ (WebSocket Stream)   • REST API Control
-            
- [CAPA 6: REACT DASHBOARD]         (Visualización Frontend)
-                                   • KPIs, Funnel y Alertas
-
-====================================================================
+    E -->|"WebSocket Push sub-500ms"| F
 ---
 
 ## ⚙️ Especificación Técnica de las Capas de la Solución
