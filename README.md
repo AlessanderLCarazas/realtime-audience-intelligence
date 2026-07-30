@@ -16,29 +16,35 @@ El pipeline de procesamiento se organiza en 6 capas funcionales desacopladas, ga
 
 ```mermaid
 graph TD
-    subgraph CAPA_1 [Capa 1: Simulación de Agentes]
-        A[Simulador de Agentes - Python 3.11] -->|Eventos JSON| B
+    subgraph C1 ["Capa 1: Simulación de Agentes"]
+        A["Simulador de Agentes (Python 3.11)"]
     end
 
-    subgraph CAPA_2 [Capa 2: Ingesta de Eventos]
-        B[Apache Kafka Cluster - digital-events] -->|Stream de Datos| C
+    subgraph C2 ["Capa 2: Ingesta de Eventos"]
+        B["Apache Kafka Cluster (digital-events)"]
     end
 
-    subgraph CAPA_3 [Capa 3: Procesamiento Distribuido]
-        C[Apache Flink Engine - Stateful Windows] -->|Métricas Procesadas| D
+    subgraph C3 ["Capa 3: Procesamiento Distribuido"]
+        C["Apache Flink Engine (PyFlink)"]
     end
 
-    subgraph CAPA_4 [Capa 4: Salida y Persistencia]
-        D[Apache Kafka Sink - processed-audiences] -->|Consumer Loop| E
+    subgraph C4 ["Capa 4: Salida y Persistencia"]
+        D["Apache Kafka Sink (processed-audiences)"]
     end
 
-    subgraph CAPA_5 [Capa 5: Backend y WebSockets]
-        E[FastAPI Backend Server] -->|Push WebSocket sub-500ms| F
+    subgraph C5 ["Capa 5: Backend y WebSockets"]
+        E["FastAPI Backend Server"]
     end
 
-    subgraph CAPA_6 [Capa 6: Presentación y Acción]
-        F[React Dashboard - Vite + Recharts]
+    subgraph C6 ["Capa 6: Presentación y Acción"]
+        F["React Dashboard (Vite + Recharts)"]
     end
+
+    A -->|"Eventos JSON"| B
+    B -->|"Stream Data"| C
+    C -->|"Métricas Procesadas"| D
+    D -->|"Consumer Loop"| E
+    E -->|"WebSocket Push < 500ms"| F
 
 Representación Esquemática en Texto
 ====================================================================
