@@ -294,6 +294,14 @@ realtime-audience-intelligence/
 
 ---
 
+<img width="1317" height="579" alt="Captura de pantalla 2026-07-29 140044" src="https://github.com/user-attachments/assets/1787590c-8294-4ca2-a1b0-59e2549d9546" />
+<img width="1313" height="558" alt="Captura de pantalla 2026-07-29 140051" src="https://github.com/user-attachments/assets/b97bf205-66e9-4ab4-9d49-f1f5d0b291f6" />
+<img width="1317" height="610" alt="Captura de pantalla 2026-07-29 140101" src="https://github.com/user-attachments/assets/d93c3642-86cc-4357-8873-bf6f93df1ba8" />
+<img width="1309" height="455" alt="Captura de pantalla 2026-07-29 140111" src="https://github.com/user-attachments/assets/18307c5b-e2b1-4a63-a848-ecaa863a3383" />
+<img width="893" height="337" alt="Captura de pantalla 2026-07-29 140122" src="https://github.com/user-attachments/assets/1ade0308-47be-4e36-b017-624f5aa742dc" />
+<img width="1289" height="272" alt="Captura de pantalla 2026-07-29 144700" src="https://github.com/user-attachments/assets/cffc538d-448f-4648-b4b1-860d2ca5b449" />
+
+
 # 📜 Licencia
 
 Este proyecto se distribuye bajo la licencia **MIT License**.
